@@ -10,7 +10,7 @@ import javax.swing.*;
 
 public class MyFrame extends JFrame  implements KeyListener,ActionListener{
 
-	JLabel t1,t2;  
+	JLabel t1;  
 	JPanel p1,p2,p3;
 	
 	int NumButton = 16;
@@ -62,9 +62,11 @@ public class MyFrame extends JFrame  implements KeyListener,ActionListener{
 		add(p2);
 		add(p3);
 		
+		t1.setText(cal.getPrint());
+		
 		this.addKeyListener(this);
+		/* focus를 받아야 키 입력을 할 수 있다 */
 		setFocusable(true);
-		/* �������� visible ������� ���ϸ� �̽��߻� - Ȯ���� - */
 		setVisible(true);
 		
 	}
@@ -81,8 +83,11 @@ public class MyFrame extends JFrame  implements KeyListener,ActionListener{
 		String t = e.getActionCommand();
 		System.out.println("Click : " + t);
 		cal.input(t);
+		t1.setText(cal.getPrint());
 		/*
-		한글 입력
+		버튼을 클릭하면 focus가 버튼으로 가게된다
+		키 입력을 계속 받기 위해선
+		프레임에 focus를 돌려줘야한다
 		 */
 		this.requestFocus();
 	}
@@ -95,7 +100,7 @@ public class MyFrame extends JFrame  implements KeyListener,ActionListener{
 		+ "\nkeyChar : " + e.getKeyChar() 
 		+ "\nkeyText : "+e.getKeyText(e.getKeyCode()));
 		cal.input(String.valueOf(e.getKeyChar()));
-
+		t1.setText(cal.getPrint());
 	}
 
 	@Override

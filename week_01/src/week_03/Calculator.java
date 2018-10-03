@@ -11,7 +11,7 @@ public class Calculator {
 		print = "0";
 	}
 	
-	/* 0~9 ±îÁöÀÇ ¼ıÀÚ ÀÔ·Â */
+	/* ê³„ì‚°ê¸° ì…ë ¥ì„ ë°›ì•˜ì„ ë•Œì˜ ì²˜ë¦¬ */
 	public void input(String v) {
 		System.out.println("Calculator input : " + v);
 		if(v.equals("+")) {}
