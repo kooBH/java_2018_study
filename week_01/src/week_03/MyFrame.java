@@ -64,7 +64,7 @@ public class MyFrame extends JFrame  implements KeyListener,ActionListener{
 		
 		this.addKeyListener(this);
 		setFocusable(true);
-		/* ¸¶Áö¸·¿¡ visible ÇØÁà¾ßÇÔ ¾ÈÇÏ¸é ÀÌ½´¹ß»ý - È®·üÀû - */
+		/* ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ visible ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ï¸ï¿½ ï¿½Ì½ï¿½ï¿½ß»ï¿½ - È®ï¿½ï¿½ï¿½ï¿½ - */
 		setVisible(true);
 		
 	}
@@ -82,9 +82,7 @@ public class MyFrame extends JFrame  implements KeyListener,ActionListener{
 		System.out.println("Click : " + t);
 		cal.input(t);
 		/*
-		 ¹öÆ° Å¬¸¯½Ã focus°¡ ¹öÆ°À¸·Î °¡¹ö¸°´Ù. 
-		 ¸ðµç ¹öÆ°¿¡ ¸®½º³Ê¸¦ ´Þ¾ÆÁÖ°Å³ª
-		 Æ÷Ä¿½º¸¦ JFrameÀ¸·Î µ¹·ÁÁÖ¸éµÈ´Ù
+		í•œê¸€ ìž…ë ¥
 		 */
 		this.requestFocus();
 	}
