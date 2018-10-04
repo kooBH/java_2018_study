@@ -1,12 +1,15 @@
 package week_03;
 
+import java.text.DecimalFormat;
+
 public class Calculator {
 	double input;
 	double output;
 	char operator;
 	String print;
-	
+	DecimalFormat formatter;
 	Calculator(){
+		  formatter = new DecimalFormat("#,###.##########");
 		output = 0;
 		print = "0";
 	}
@@ -24,11 +27,14 @@ public class Calculator {
 		else if(v.equals("clear")) {}
 		/* Number */
 		else {
-			
+			if(output == 0)output = Integer.valueOf(v);
+			else
+				output = output*10 + Integer.valueOf(v);
 		}
 	}
 	
 	public String getPrint() {
+		print = formatter.format(output);
 		return print;
 	}
 }
