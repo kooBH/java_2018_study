@@ -6,6 +6,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.ArrayList;
+
 import javax.swing.*;
 
 public class MyFrame extends JFrame  implements KeyListener,ActionListener{
@@ -13,12 +15,16 @@ public class MyFrame extends JFrame  implements KeyListener,ActionListener{
 	JLabel t1;  
 	JPanel p1,p2,p3;
 	
+	//String key[]= {"0","1","2","3","4","5","6","7","8","9","+","q"};
+	
 	int NumButton = 16;
 	Calculator cal;
 	MyFrame(String title){
+		
 		super(title);
 		int i;
 		cal = new Calculator();
+		
 		
 		setSize(640, 380);
 		
@@ -27,8 +33,8 @@ public class MyFrame extends JFrame  implements KeyListener,ActionListener{
 		p3 = new JPanel();
 		
 		setLayout(new GridLayout(3,1));
-		p2.setLayout(new GridLayout(2,4));
-		p3.setLayout(new GridLayout(2,4));
+		p2.setLayout(new GridLayout(2,5));
+		p3.setLayout(new GridLayout(2,5));
 		
 		
 		t1 = new JLabel();
@@ -42,21 +48,26 @@ public class MyFrame extends JFrame  implements KeyListener,ActionListener{
 		AddButton("8",p2);
 		AddButton("9",p2);
 		AddButton("+",p2);
+		AddButton("←",p2);
+		
 		
 		AddButton("4",p2);
 		AddButton("5",p2);
 		AddButton("6",p2);
 		AddButton("-",p2);
+		AddButton("=",p2);
 		
 		AddButton("1",p3);
 		AddButton("2",p3);
 		AddButton("3",p3);
 		AddButton("*",p3);
+		AddButton("√",p3);
 		
-		AddButton("CE",p3);		
+		AddButton("clear",p3);		
 		AddButton("0",p3);
-		AddButton("DEL",p3);
+		AddButton(".",p3);
 		AddButton("/",p3);
+		AddButton("±",p3);
 		
 		add(t1);
 		add(p2);
