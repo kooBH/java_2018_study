@@ -5,6 +5,7 @@ import java.text.DecimalFormat;
 public class Calculator {
 	double input;
 	double output;
+	double mid;
 	char operator;
 	String print;
 	DecimalFormat formatter;
@@ -18,23 +19,27 @@ public class Calculator {
 	public void input(String v) {
 		System.out.println("Calculator input : " + v);
 		if(v.equals("+")) {}
-		else if(v.equals("+")) {}
-		else if(v.equals("-")) {}
-		else if(v.equals("*")) {}
-		else if(v.equals("/")) {}
-		else if(v.equals("=")) {}
-		else if(v.equals("←")) {}
+		else if(v.equals("+")) {operator = '+';}
+		else if(v.equals("-")) {operator = '-';}
+		else if(v.equals("*")) {operator = '*';}
+		else if(v.equals("/")) {operator = '/';}
+		else if(v.equals("=")) {
+			output = mid;
+			print = formatter.format(output);
+			return;
+		}
+		else if(v.equals("←")) {input = input/10;}
 		else if(v.equals("clear")) {}
 		/* Number */
 		else {
-			if(output == 0)output = Integer.valueOf(v);
+			if(input == 0)input = Integer.valueOf(v);
 			else
-				output = output*10 + Integer.valueOf(v);
+				input = input*10 + Integer.valueOf(v);
 		}
 	}
 	
 	public String getPrint() {
-		print = formatter.format(output);
+		
 		return print;
 	}
 }
