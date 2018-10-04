@@ -19,8 +19,9 @@ public class Calculator {
 		else if(v.equals("-")) {}
 		else if(v.equals("*")) {}
 		else if(v.equals("/")) {}
-		else if(v.equals("DEL")) {}
-		else if(v.equals("CE")) {}
+		else if(v.equals("=")) {}
+		else if(v.equals("←")) {}
+		else if(v.equals("clear")) {}
 		/* Number */
 		else {
 			

@@ -15,7 +15,7 @@ public class MyFrame extends JFrame  implements KeyListener,ActionListener{
 	JLabel t1;  
 	JPanel p1,p2,p3;
 	
-	String key[] = {"0","1","2","3","4","5","6","7","8","9","+","-","/","*","=","Backspace"};
+	String key[] = {"0","1","2","3","4","5","6","7","8","9","+","-","/","*","=","Backspace","Period"};
 	int NumButton = 16;
 	Calculator cal;
 	MyFrame(String title){
@@ -106,19 +106,20 @@ public class MyFrame extends JFrame  implements KeyListener,ActionListener{
 	@Override
 	public void keyPressed(KeyEvent e) {
 		String keyInput = e.getKeyText(e.getKeyCode());
-		System.out.println(
-		  "keyCode : "+e.getKeyCode() 
-		+ "\nkeyChar : " + e.getKeyChar() 
-		+ "\nkeyText : "+e.getKeyText(e.getKeyCode()));
+		System.out.println("keyText : "+e.getKeyText(e.getKeyCode()));
 	
 		boolean inCal=false;
+		/* 상용하지 않는 키 입려을 걸러준다*/
 		for(int i=0;i<key.length;i++) {
 			
 			if(keyInput.equals(key[i]))inCal = true;
 		}
 		if(inCal) {
+		/* 키 입력을 대응하는 버튼 클릭으로 전환해준다 */
 		if(keyInput.equals("Backspace"))
 			keyInput = "←";
+		else if(keyInput.equals("Period"))
+			keyInput = ".";
 		cal.input(keyInput);
 		t1.setText(cal.getPrint());
 		}
