@@ -1,7 +1,5 @@
 package week_03;
-
 import java.text.DecimalFormat;
-
 public class Calculator {
 	double input;
 	double output;
@@ -10,11 +8,15 @@ public class Calculator {
 	String print;
 	DecimalFormat formatter;
 	Calculator(){
-		  formatter = new DecimalFormat("#,###.##########");
+		/*
+		 * 일반적으로 실수형을 표현할때 길이가 어느정도 길어지면 a.bxc * 10E
+		 * 꼴로 표현된다. 계산기는 그렇게 표현하지 않을 것이기 때문에
+		 * 문자열의 표현방식인 포맷을 변경해서 출력한다
+		 * */
+		formatter = new DecimalFormat("#,###.##########");
 		output = 0;
 		print = "0";
 	}
-	
 	/* 계산기 입력을 받았을 때의 처리 */
 	public void input(String v) {
 		System.out.println("Calculator input : " + v);
@@ -25,6 +27,7 @@ public class Calculator {
 		else if(v.equals("/")) {operator = '/';}
 		else if(v.equals("=")) {
 			output = mid;
+			// 포맷적용
 			print = formatter.format(output);
 			return;
 		}
@@ -37,9 +40,7 @@ public class Calculator {
 				input = input*10 + Integer.valueOf(v);
 		}
 	}
-	
 	public String getPrint() {
-		
 		return print;
 	}
 }
