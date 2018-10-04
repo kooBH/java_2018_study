@@ -17,7 +17,14 @@ public class Calculator {
 		output = 0;
 		print = "0";
 	}
-	/* 계산기 입력을 받았을 때의 처리 */
+	/* 계산기 입력을 받았을 때의 처리 
+	 * 
+	 * 1. 처음 숫자입력
+	 * 2. =이 아닌 연산자입력
+	 * 3. =의 입력
+	 * 4. 연산자 이후 숫자입력
+	 * etc..
+	 * */
 	public void input(String v) {
 		System.out.println("Calculator input : " + v);
 		if(v.equals("+")) {}
@@ -39,6 +46,7 @@ public class Calculator {
 			else
 				input = input*10 + Integer.valueOf(v);
 		}
+		print = formatter.format(input);
 	}
 	public String getPrint() {
 		return print;
