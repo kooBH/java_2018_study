@@ -46,7 +46,8 @@ public class Calculator {
 		//현재 Op
 		char curOp=0;
 		boolean isCalOp=false;
-		System.out.println("Calculator input : " + v);
+		System.out.println("v : " + v + "\ninput : " + input +
+				"\noutput : " + output + "\nop : " + op);
 		
 		// 1. 계산하는 입력
 		// 경우의 확인
@@ -80,6 +81,10 @@ public class Calculator {
 			// 포맷적용
 			if(op != 0)
 				performOp(op);
+			else
+				output = input;
+			state = State.OP;
+			input = 0;
 			print = formatter.format(output);
 			return;
 		}
