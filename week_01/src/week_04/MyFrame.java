@@ -74,23 +74,23 @@ public class MyFrame extends JFrame  implements ActionListener{
 		}
 		//처음에 그릴때
 		public void popInit() {
+			//그래픽을 받아옴
 			gBuf = (Graphics2D) p1.getGraphics();
 			gBuf.setColor(Color.black);
-			gBuf.fillRect(x, 0, 100, 100); 
+			gBuf.fillOval(x, 0, 100, 100); 
 		}
 		//이동하면서 그릴때
 		void popMove() {
-			gBuf = (Graphics2D) p1.getGraphics();
-			
+					
 			//XOR모드시 그림이 겹치는 경우 XOR에 지정된 색으로 겹치는 부분을 메꾸게 된다
 			//gBuf.setXORMode(p1.getBackground());
 			
 			//원래 있던 그림을 덮어씌운다
 			gBuf.setColor(p1.getBackground());
-			gBuf.fillRect(x, 0, 100, 100); 
+			gBuf.fillOval(x, 0, 100, 100); 
 			
 			gBuf.setColor(Color.black);
-			gBuf.fillRect(x+=50, 0, 100, 100);
+			gBuf.fillOval(x+=50, 0, 100, 100);
 		}
 	}
 	
