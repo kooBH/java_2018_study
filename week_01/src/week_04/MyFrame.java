@@ -30,7 +30,7 @@ public class MyFrame extends JFrame  implements ActionListener{
 	Image img;
 	BufferedImage buf;
 	
-	
+	int y;
 	MyFrame(String title){
 		super(title);
 		//리스트 생성
@@ -59,15 +59,18 @@ public class MyFrame extends JFrame  implements ActionListener{
 		//gBuf = buf.createGraphics();
 		//gBuf = (Graphics2D) p1.getGraphics();
 		
-		
+		y=0;
 		this.setVisible(true);	
 	}
+	
 	
 	//쓰레드 서브 클래스
 	class MyThread extends Thread{
 		int x;
-		MyThread(){
+		int y;
+		MyThread(int _y){
 			x=0;
+			y=_y;
 		}
 		//Thread.start()시 돌아가게 되는 메서드
 		public void run() {
@@ -94,7 +97,8 @@ public class MyFrame extends JFrame  implements ActionListener{
 			//그래픽을 받아옴
 			gBuf = (Graphics2D) p1.getGraphics();
 			gBuf.setColor(Color.black);
-			gBuf.fillOval(x, 0, 100, 100); 
+			//대부분의 
+			gBuf.fillOval(x, y, 100, 100); 
 		}
 		//이동하면서 그릴때
 		void popMove() {
@@ -104,20 +108,22 @@ public class MyFrame extends JFrame  implements ActionListener{
 			
 			//원래 있던 그림을 덮어씌운다
 			gBuf.setColor(p1.getBackground());
-			gBuf.fillOval(x, 0, 100, 100); 
+			gBuf.fillOval(x, y, 100, 100); 
 			
 			gBuf.setColor(Color.black);
-			gBuf.fillOval(x+=50, 0, 100, 100);
+			gBuf.fillOval(x+=50, y,100, 100);
 		}
 	}
 	
 	//버튼을 누르면 쓰레드를 만들어서 실행
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
-		MyThread n1 = new MyThread();
+		MyThread n1 = new MyThread(y+=50);
 		n1.start();
 		//쓰레드 ArrayList에 추가함
 		Ovals.add(n1);
+		
+		Math.random();
 	}
 	
 	class killer implements ActionListener{
