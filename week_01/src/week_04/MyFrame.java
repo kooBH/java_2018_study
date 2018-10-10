@@ -2,6 +2,7 @@ package week_04;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -45,6 +46,7 @@ public class MyFrame extends JFrame  implements ActionListener{
 		p2 = new JPanel();
 		//그리는 부분을 센터에
 		add(p1,BorderLayout.CENTER);
+				
 		//버튼에 리스너 달아주고
 		b1.addActionListener(this);
 		b2.addActionListener(new killer());
@@ -54,13 +56,14 @@ public class MyFrame extends JFrame  implements ActionListener{
 		//아래에 버튼 
 		add(p2,BorderLayout.PAGE_END);
 		
-		//안쓴것
+		//안쓴것 this.getSize()는 프레임의 크기를 받는다. 각각 가로와 세로 길이를 가진다
 		buf = new BufferedImage(this.getSize().width,this.getSize().height, BufferedImage.TYPE_INT_ARGB);
 		//gBuf = buf.createGraphics();
 		//gBuf = (Graphics2D) p1.getGraphics();
 		
 		y=0;
 		this.setVisible(true);	
+		
 	}
 	
 	
@@ -68,14 +71,16 @@ public class MyFrame extends JFrame  implements ActionListener{
 	class MyThread extends Thread{
 		int x;
 		int y;
-		MyThread(int _y){
+		boolean flag;
+		MyThread(){
 			x=0;
-			y=_y;
+			y=0;
+			flag= true;
 		}
 		//Thread.start()시 돌아가게 되는 메서드
 		public void run() {
 			popInit();
-			while(!Thread.currentThread().isInterrupted()) {
+			while(flag) {
 				popMove();
 				
 				//Thread.slepp()의 경우 try,catch 로 감싸서 예외처리를 
@@ -92,6 +97,8 @@ public class MyFrame extends JFrame  implements ActionListener{
 			}
 			System.out.println("Thread Finished");
 		}
+		//종료
+		public void die() {flag=false;}
 		//처음에 그릴때
 		public void popInit() {
 			//그래픽을 받아옴
@@ -102,38 +109,32 @@ public class MyFrame extends JFrame  implements ActionListener{
 		}
 		//이동하면서 그릴때
 		void popMove() {
-					
-			//XOR모드시 그림이 겹치는 경우 XOR에 지정된 색으로 겹치는 부분을 메꾸게 된다
-			//gBuf.setXORMode(p1.getBackground());
-			
-			//원래 있던 그림을 덮어씌운다
-			gBuf.setColor(p1.getBackground());
-			gBuf.fillOval(x, y, 100, 100); 
 			
 			gBuf.setColor(Color.black);
-			gBuf.fillOval(x+=50, y,100, 100);
+			gBuf.fillOval(x, y,100, 100);
 		}
 	}
 	
 	//버튼을 누르면 쓰레드를 만들어서 실행
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
-		MyThread n1 = new MyThread(y+=50);
+		MyThread n1 = new MyThread();
 		n1.start();
 		//쓰레드 ArrayList에 추가함
 		Ovals.add(n1);
 		
-		Math.random();
 	}
 	
 	class killer implements ActionListener{
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
+			
 			//ArrayList Ovals의 모든 원소 t에 대하여 수행
-			for(MyThread t: Ovals) {
-				//모든 쓰레드에 인터럽트를 걸어준다
-			    t.interrupt();
+			for(MyThread t: Ovals) {				
+			    t.die();
+			    //모든 쓰레드에 인터럽트를 걸어준다
+				  //  t.interrupt();
 			}
 		}
 		
