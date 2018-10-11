@@ -64,8 +64,40 @@ public class MyFrame extends JFrame  implements ActionListener{
 		y=0;
 		this.setVisible(true);	
 		
+		MyPainter p = new MyPainter();
+		p.start();
 	}
 	
+	class MyPainter extends Thread{
+		
+		public MyPainter(){
+			gBuf = (Graphics2D) p1.getGraphics();
+		}
+		
+		public void run(){
+			while(true) {
+				gBuf.setColor(p1.getBackground());
+				gBuf.fillRect(0, 0, p1.getWidth(), p1.getHeight());
+				
+				for(MyThread t: Ovals) {
+					gBuf.setColor(Color.black);
+					
+					gBuf.fillOval(t.x, t.y,100, 100);	
+					
+				}
+				try {
+					System.out.println("paint");
+					Thread.sleep(1000);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+			}
+			
+		}
+		
+	}
 	
 	//쓰레드 서브 클래스
 	class MyThread extends Thread{
@@ -102,16 +134,17 @@ public class MyFrame extends JFrame  implements ActionListener{
 		//처음에 그릴때
 		public void popInit() {
 			//그래픽을 받아옴
-			gBuf = (Graphics2D) p1.getGraphics();
-			gBuf.setColor(Color.black);
+		//	gBuf.setColor(Color.black);
 			//대부분의 
-			gBuf.fillOval(x, y, 100, 100); 
+			//gBuf.fillOval(x, y, 100, 100); 
 		}
 		//이동하면서 그릴때
 		void popMove() {
-			
-			gBuf.setColor(Color.black);
-			gBuf.fillOval(x, y,100, 100);
+
+			//gBuf.setXORMode(Color.black.);
+			x+=10;
+		//	gBuf.setColor(Color.black);
+	//		gBuf.fillOval(x+=10, y,100, 100);
 		}
 	}
 	
