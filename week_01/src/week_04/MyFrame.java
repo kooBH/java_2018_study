@@ -27,6 +27,7 @@ public class MyFrame extends JFrame  implements ActionListener{
 	//쓰레드를 담아둘 리스트
 	ArrayList<MyThread> Ovals;
 	
+	boolean crt;
 	//안쓴것
 	Image img;
 	BufferedImage buf;
@@ -34,6 +35,7 @@ public class MyFrame extends JFrame  implements ActionListener{
 	int y;
 	MyFrame(String title){
 		super(title);
+		crt=true;
 		//리스트 생성
 		Ovals = new ArrayList<MyThread>();
 		//화면 크기
@@ -78,16 +80,17 @@ public class MyFrame extends JFrame  implements ActionListener{
 			while(true) {
 				gBuf.setColor(p1.getBackground());
 				gBuf.fillRect(0, 0, p1.getWidth(), p1.getHeight());
-				
+				while(!crt);
+				crt=false;
 				for(MyThread t: Ovals) {
-					gBuf.setColor(Color.black);
-					
+					gBuf.setColor(t.myColor);
 					gBuf.fillOval(t.x, t.y,100, 100);	
-					
+					if(!t.flag)Ovals.remove(t);
 				}
+				crt=true;
 				try {
 					System.out.println("paint");
-					Thread.sleep(1000);
+					Thread.sleep(100);
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -104,10 +107,12 @@ public class MyFrame extends JFrame  implements ActionListener{
 		int x;
 		int y;
 		boolean flag;
-		MyThread(){
+		Color myColor;
+		MyThread(int _y){
 			x=0;
-			y=0;
+			y=_y;
 			flag= true;
+			myColor = new Color((float)Math.random(),(float)Math.random(),(float)Math.random());
 		}
 		//Thread.start()시 돌아가게 되는 메서드
 		public void run() {
@@ -119,7 +124,7 @@ public class MyFrame extends JFrame  implements ActionListener{
 				//반드시 받게 되어있다
 				try {
 					//1초(1000ms) 대기
-					Thread.sleep(1000);
+					Thread.sleep(1);
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -142,7 +147,9 @@ public class MyFrame extends JFrame  implements ActionListener{
 		void popMove() {
 
 			//gBuf.setXORMode(Color.black.);
-			x+=10;
+			x+=30;
+			if(x>p1.getWidth())
+				this.flag=false;
 		//	gBuf.setColor(Color.black);
 	//		gBuf.fillOval(x+=10, y,100, 100);
 		}
@@ -151,11 +158,14 @@ public class MyFrame extends JFrame  implements ActionListener{
 	//버튼을 누르면 쓰레드를 만들어서 실행
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
-		MyThread n1 = new MyThread();
+		MyThread n1 = new MyThread(y+=50);
+		if(y > p1.getHeight())y=0;
 		n1.start();
 		//쓰레드 ArrayList에 추가함
+		while(!crt);
+		crt=false;
 		Ovals.add(n1);
-		
+		crt=true;
 	}
 	
 	class killer implements ActionListener{
@@ -164,11 +174,14 @@ public class MyFrame extends JFrame  implements ActionListener{
 		public void actionPerformed(ActionEvent e) {
 			
 			//ArrayList Ovals의 모든 원소 t에 대하여 수행
+			while(!crt);
+			crt=false;
 			for(MyThread t: Ovals) {				
 			    t.die();
 			    //모든 쓰레드에 인터럽트를 걸어준다
 				  //  t.interrupt();
 			}
+			crt=true;
 		}
 		
 	}
