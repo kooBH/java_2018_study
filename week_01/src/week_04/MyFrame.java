@@ -24,10 +24,10 @@ public class MyFrame extends JFrame  implements ActionListener{
 	JButton b1,b2;
 	//화면에 그리는 그래픽 객체
 	Graphics2D gBuf;
-	//쓰레드를 담아둘 리스트
-	ArrayList<MyThread> Ovals;
 	
-	boolean crt;
+	//쓰레드를 담아둘 리스트
+	ArrayList<Ball> Ovals;
+	
 	//안쓴것
 	Image img;
 	BufferedImage buf;
@@ -35,9 +35,11 @@ public class MyFrame extends JFrame  implements ActionListener{
 	int y;
 	MyFrame(String title){
 		super(title);
-		crt=true;
-		//리스트 생성
-		Ovals = new ArrayList<MyThread>();
+		
+		//각 공의 정보를 받을 ArrayList를 생성
+		Ovals = new ArrayList<Ball>();
+		
+		
 		//화면 크기
 		this.setSize(1280, 640);
 		//패널과 버튼의 배치
@@ -58,7 +60,8 @@ public class MyFrame extends JFrame  implements ActionListener{
 		//아래에 버튼 
 		add(p2,BorderLayout.PAGE_END);
 		
-		//안쓴것 this.getSize()는 프레임의 크기를 받는다. 각각 가로와 세로 길이를 가진다
+		//안쓴것
+		//this.getSize()는 프레임의 크기를 받는다. 각각 가로와 세로 길이를 가진다
 		buf = new BufferedImage(this.getSize().width,this.getSize().height, BufferedImage.TYPE_INT_ARGB);
 		//gBuf = buf.createGraphics();
 		//gBuf = (Graphics2D) p1.getGraphics();
@@ -66,122 +69,118 @@ public class MyFrame extends JFrame  implements ActionListener{
 		y=0;
 		this.setVisible(true);	
 		
+		//공을 그리는 쓰레드
 		MyPainter p = new MyPainter();
 		p.start();
 	}
 	
+	//공을 그리는 쓰레드
 	class MyPainter extends Thread{
 		
+		//패널의 그래픽 성분을 받아온다
 		public MyPainter(){
 			gBuf = (Graphics2D) p1.getGraphics();
 		}
 		
 		public void run(){
+			//계속 돌아감
 			while(true) {
-				gBuf.setColor(p1.getBackground());
-				gBuf.fillRect(0, 0, p1.getWidth(), p1.getHeight());
-				while(!crt);
-				crt=false;
-				for(MyThread t: Ovals) {
-					gBuf.setColor(t.myColor);
-					gBuf.fillOval(t.x, t.y,100, 100);	
-					if(!t.flag)Ovals.remove(t);
+				
+				
+				
+				
+				
+				for(Ball t: Ovals) {
+		
+				
+					
+					
+					
 				}
-				crt=true;
+				
 				try {
-					System.out.println("paint");
 					Thread.sleep(100);
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				
 			}
+		}
+	}
+	
+	//MyFrame 서브 클래스인 Ball
+	//한개의 공을 표현한다
+	class Ball extends Thread{
+		//공의 좌표
+		int x;
+		int y;
+		//공이 살아있는지 체크하는 플래그
+		boolean alive;
+		//공의 색
+		Color myColor;
+		//공 쓰레드의 생성자
+		Ball(){
+			
+			
+			
+			
+			
+		}
+		//쓰레드를 종료시키는 메서드
+		public void die() {
+					
+					
+				}
+		//공의 움직임
+		void Move() {
+			
+			
+			
 			
 		}
 		
-	}
-	
-	//쓰레드 서브 클래스
-	class MyThread extends Thread{
-		int x;
-		int y;
-		boolean flag;
-		Color myColor;
-		MyThread(int _y){
-			x=0;
-			y=_y;
-			flag= true;
-			myColor = new Color((float)Math.random(),(float)Math.random(),(float)Math.random());
-		}
 		//Thread.start()시 돌아가게 되는 메서드
 		public void run() {
-			popInit();
-			while(flag) {
-				popMove();
-				
+			//이 쓰레드가 alive 한 동안
+			while(alive) {
+				Move();
 				//Thread.slepp()의 경우 try,catch 로 감싸서 예외처리를 
 				//반드시 받게 되어있다
 				try {
 					//1초(1000ms) 대기
-					Thread.sleep(1);
+					Thread.sleep(1000);
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
-					//인터럽트를 받으면 그만한다
 					break;
 				}
 			}
 			System.out.println("Thread Finished");
 		}
-		//종료
-		public void die() {flag=false;}
-		//처음에 그릴때
-		public void popInit() {
-			//그래픽을 받아옴
-		//	gBuf.setColor(Color.black);
-			//대부분의 
-			//gBuf.fillOval(x, y, 100, 100); 
-		}
-		//이동하면서 그릴때
-		void popMove() {
-
-			//gBuf.setXORMode(Color.black.);
-			x+=30;
-			if(x>p1.getWidth())
-				this.flag=false;
-		//	gBuf.setColor(Color.black);
-	//		gBuf.fillOval(x+=10, y,100, 100);
-		}
+		
 	}
 	
 	//버튼을 누르면 쓰레드를 만들어서 실행
+	// 이 메서드는 MyFrame에 달려있는 메서드
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
-		MyThread n1 = new MyThread(y+=50);
-		if(y > p1.getHeight())y=0;
+		//쓰레드 생성
+		Ball n1 = new Ball();
+		//쓰레드 시작
 		n1.start();
-		//쓰레드 ArrayList에 추가함
-		while(!crt);
-		crt=false;
+		//쓰레드 ArrayList에 추가함		
 		Ovals.add(n1);
-		crt=true;
 	}
 	
+	// 별도의 버튼 리스너를 만들기위해 서브클래스를 추가
 	class killer implements ActionListener{
-
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			
 			//ArrayList Ovals의 모든 원소 t에 대하여 수행
-			while(!crt);
-			crt=false;
-			for(MyThread t: Ovals) {				
+			for(Ball t: Ovals) {				
 			    t.die();
-			    //모든 쓰레드에 인터럽트를 걸어준다
-				  //  t.interrupt();
+			   
 			}
-			crt=true;
 		}
 		
 	}
