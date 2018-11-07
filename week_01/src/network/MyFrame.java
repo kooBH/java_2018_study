@@ -19,7 +19,6 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.*;
 
-
 public class MyFrame extends JFrame{
 
 	JPanel chatText;

@@ -12,21 +12,21 @@ public class MyClient extends MyFrame implements ActionListener{
 	int state;
 	Client t;
 	String input;
-	Socket s;
+	Socket s; // 0이면 미접속, 1이면 접속중
 	String serverIP;
 	MyClient() throws UnknownHostException{
 		super("Client");
 		button.addActionListener(this);
 		button.setText("Connect");
 		state = 0;
-		serverIP = myIP;
+		serverIP = myIP; //기본값은 자기자신의 IP
 		t = new Client();
 	}
 	
 	// 클라이언트 쓰레드
 		class Client extends Thread{
-			
-			int port = 1234;
+			//임의로 설정한 포트  넘버, 서버와 같아야한다
+			int port = 1234; 
 			
 			boolean alive;
 			
@@ -37,20 +37,23 @@ public class MyClient extends MyFrame implements ActionListener{
 			public void run(){
 				labelStatus.setText("Connecting");
 				try {
+					//소켓 연결
 					s = new Socket(serverIP,port);
-					
+					//버처 초기화
 					initBuffer(s);
 				} catch (IOException e1) { e1.printStackTrace();}
 				labelStatus.setText("Connected");
 				
+				//계속해서
 				while(alive) {
 					try {
+						//소켓으로 들어오는 입력을 받는다
 						input = br.readLine();
 						printText(input);
 					} catch (IOException e) {e.printStackTrace();}
 					
 				}
-				
+				//종료
 				try {
 					s.close();
 					freeBuffer();
@@ -71,17 +74,21 @@ public class MyClient extends MyFrame implements ActionListener{
 			case 0:
 				input = this.fieldInput.getText();
 				serverIP = input;
+				//클라이언트 쓰렏 시작
 				t.start();
 				
 				state = 1;
 				button.setText("Send");
 				break;
 			case 1: 
+				//텍스트 필드에 있는 문자열을 전송
 				input = this.fieldInput.getText();
 				 try {
-			        input = "Client : "+ input + "\n";
+			        input = myIP + " : "+ input + "\n";
+			        //소켓에 연결된 출력 스트림을 통해 문자열 전송
 			        bw.write(input);
 			        System.out.println("write " + input);
+			        //출력 스트림 비워줌
 			        bw.flush();
 				 } catch (IOException e) {e.printStackTrace();}
 				break;

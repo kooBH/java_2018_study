@@ -26,11 +26,13 @@ public class MyFrame extends JFrame  implements ActionListener{
 	Graphics2D gBuf;
 	
 	//쓰레드를 담아둘 리스트
-	ArrayList<Ball> Ovals;
+	volatile ArrayList<Ball> Ovals;
 	
 	//안쓴것
 	Image img;
 	BufferedImage buf;
+	
+	boolean crt;
 	
 	int y;
 	MyFrame(String title){
@@ -39,7 +41,7 @@ public class MyFrame extends JFrame  implements ActionListener{
 		//각 공의 정보를 받을 ArrayList를 생성
 		Ovals = new ArrayList<Ball>();
 		
-		
+		crt = false;
 		//화면 크기
 		this.setSize(1280, 640);
 		//패널과 버튼의 배치
@@ -85,17 +87,15 @@ public class MyFrame extends JFrame  implements ActionListener{
 		public void run(){
 			//계속 돌아감
 			while(true) {
-				
+				gBuf.setColor(Color.white);
+				gBuf.fillRect(0, 0, p1.getWidth(), p1.getHeight());
 				
 				
 				
 				
 				for(Ball t: Ovals) {
-		
-				
-					
-					
-					
+					gBuf.setColor(t.myColor);
+					gBuf.fillOval(t.x, t.y, 50, 50);
 				}
 				
 				try {
@@ -120,21 +120,30 @@ public class MyFrame extends JFrame  implements ActionListener{
 		Color myColor;
 		//공 쓰레드의 생성자
 		Ball(){
-			
-			
-			
-			
-			
+			x=p1.getWidth()/2;
+			y=p1.getHeight()/2;
+			alive = true;
+			myColor = new Color((float)Math.random(),(float)Math.random(),(float)Math.random());
 		}
 		//쓰레드를 종료시키는 메서드
 		public void die() {
-					
+					alive = false;
 					
 				}
 		//공의 움직임
 		void Move() {
 			
-			
+			while(alive) {
+				x+=(int)(Math.random()*21)-10;
+				y+=(int)(Math.random()*21)-10;
+				
+				try {
+					Thread.sleep(100);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
 			
 			
 		}
@@ -176,11 +185,13 @@ public class MyFrame extends JFrame  implements ActionListener{
 	class killer implements ActionListener{
 		@Override
 		public void actionPerformed(ActionEvent e) {
+			crt = true;
 			//ArrayList Ovals의 모든 원소 t에 대하여 수행
 			for(Ball t: Ovals) {				
 			    t.die();
 			   
 			}
+			crt = false;
 		}
 		
 	}

@@ -8,8 +8,5 @@ public class Main {
 	public static void main(String[] args) throws IOException {
 		MyServer sv = new MyServer();
 		MyClient cl = new MyClient();
-		
-
-		
 	}
 }
