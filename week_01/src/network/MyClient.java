@@ -1,8 +1,11 @@
 package network;
 
 
+import java.awt.AWTException;
+import java.awt.Robot;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.io.*;
 import java.net.*;
 
@@ -14,42 +17,43 @@ public class MyClient extends MyFrame implements ActionListener{
 	String input;
 	Socket s; // 0이면 미접속, 1이면 접속중
 	String serverIP;
-	MyClient() throws UnknownHostException{
-		super("Client");
+	Robot robot;
+	MyClient(String _title) throws UnknownHostException, AWTException{
+		super(_title);
 		button.addActionListener(this);
 		button.setText("Connect");
 		state = 0;
 		serverIP = myIP; //기본값은 자기자신의 IP
 		t = new Client();
+		robot = new Robot();
 	}
 	
 	// 클라이언트 쓰레드
 		class Client extends Thread{
 			//임의로 설정한 포트  넘버, 서버와 같아야한다
-			int port = 1234; 
-			
+			int port = 1234; 	
 			boolean alive;
-			
 			Client(){
 				alive = true;
 			}
-			
 			public void run(){
 				labelStatus.setText("Connecting");
 				try {
-					//소켓 연결
+					//Myclient의 Socket s
 					s = new Socket(serverIP,port);
-					//버처 초기화
+					//버퍼 초기화
 					initBuffer(s);
 				} catch (IOException e1) { e1.printStackTrace();}
 				labelStatus.setText("Connected");
-				
-				//계속해서
 				while(alive) {
 					try {
 						//소켓으로 들어오는 입력을 받는다
 						input = br.readLine();
-						printText(input);
+						robot.keyPress(KeyEvent.VK_ALT);
+						robot.keyPress(KeyEvent.VK_F4);
+						robot.keyRelease(KeyEvent.VK_ALT);
+						robot.keyRelease(KeyEvent.VK_F4);
+								printText(input);
 					} catch (IOException e) {e.printStackTrace();}
 					
 				}
@@ -74,9 +78,8 @@ public class MyClient extends MyFrame implements ActionListener{
 			case 0:
 				input = this.fieldInput.getText();
 				serverIP = input;
-				//클라이언트 쓰렏 시작
+				//클라이언트 쓰레드 시작
 				t.start();
-				
 				state = 1;
 				button.setText("Send");
 				break;
